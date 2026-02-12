@@ -1,130 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>0xSynix</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Nisarg Vegadava is a dedicated cybersecurity enthusiast focusing on penetration testing and Red Teaming.">
-    <meta name="keywords" content="0xsynix, Synix, Penetration Testing, synix CTF, Cybersecurity Research, red team">
-    <meta name="author" content="0xSynix">
+<title>0xSynix</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Nisarg Vegadava is a dedicated cybersecurity enthusiast focusing on penetration testing and Red Teaming.">
+<meta name="keywords" content="0xsynix, Synix, Penetration Testing, synix CTF, Cybersecurity Research, red team">
+<meta name="author" content="0xSynix">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io\favicon-16x16.png">
-    <link rel="manifest" href="/favicon_io/site.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+<link rel="manifest" href="/favicon_io/site.webmanifest">
 
-    <style>
-        @font-face { font-family: 'akira'; src: url("fonts/akira.ttf") format("truetype"); }
+<style>
+@font-face { font-family: 'akira'; src: url("fonts/akira.ttf") format("truetype"); }
 
-        body { 
-            color: #dddddd;
-            background: radial-gradient(circle, #101010, #15163f);
-            font-family: monospace;
-            font-size: 16px;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center; /* Horizontal Center */
-            align-items: center;     /* Vertical Center */
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+:root {
+    --primary: #974EDE;
+    --primary-glow: rgba(151, 78, 222, 0.5);
+    --bg-dark: #0a0a0c;
+    --text-main: #dddddd;
+}
 
-        /* Container to hold the terminal block */
-        .terminal-container {
-            max-width: 95vw;
-            padding: 20px;
-        }
+body { 
+    color: var(--text-main);
+    background: radial-gradient(circle at center, #1a1b3a 0%, #050505 100%);
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    padding-top: 5vh; 
+    overflow: hidden; 
+}
 
-        pre { 
-            font-family: monospace;
-            white-space: pre; /* Keeps ASCII art intact */
-            margin: 0 auto;
-            display: inline-block;
-            text-align: left;
-        }
+/* Background Scanline Animation */
+body::before {
+    content: " ";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary-glow);
+    opacity: 0.1;
+    z-index: 10;
+    pointer-events: none;
+    animation: scanline 8s linear infinite;
+}
 
-        /* Responsive scaling for mobile */
-        @media (max-width: 850px) {
-            pre {
-                font-size: 1.8vw; /* Shrinks the text to fit small screens */
-                line-height: 2vw;
-            }
-        }
+@keyframes scanline {
+    0% { top: 0; }
+    100% { top: 100%; }
+}
 
-        @media (max-width: 480px) {
-            pre {
-                font-size: 2.2vw;
-            }
-            .terminal-container {
-                padding: 10px;
-            }
-        }
+.container {
+    max-width: 900px;
+    width: 90%;
+    background: rgba(15, 15, 25, 0.8);
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 20px var(--primary-glow);
+    padding: 40px;
+    position: relative;
+    backdrop-filter: blur(10px);
+    z-index: 5;
+}
 
-        h1, h2, h3, h4 { font-family: 'akira', monospace; }
+.ascii-header {
+    color: var(--primary);
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    white-space: pre;
+    overflow-x: auto;
+    transition: all 0.4s ease;
+    cursor: default;
+}
 
-        a { 
-            color: #974EDE; 
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        a:hover { color: #ffffff; }
+.ascii-header:hover {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.4);
+    transform: scale(1.02);
+}
 
-        y { color: #ffffff; }
-        gy { color: #974EDE; }
-        w { color: #ffffff; }
-        pnk { color: #974EDE; }
+.nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--primary-glow);
+    padding-bottom: 20px;
+}
 
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-    </style>
+.nav-links a {
+    color: var(--text-main);
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.content-section {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: rgba(151, 78, 222, 0.05);
+    border-left: 3px solid var(--primary);
+    padding: 20px;
+    margin: 20px 0;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.card:hover {
+    transform: translateX(10px);
+    background: rgba(151, 78, 222, 0.1);
+}
+
+.footer-text {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.8em;
+    color: var(--primary);
+    opacity: 0.6;
+}
+
+/* --- Fixed Bottom Bar Styles --- */
+
+.intel-cache-system {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Static Bar that sits at the bottom */
+.static-bottom-bar {
+    width: 100%;
+    background: var(--primary);
+    color: #fff;
+    font-family: 'akira', monospace;
+    font-size: 12px;
+    text-align: center;
+    padding: 12px 0;
+    cursor: pointer;
+    box-shadow: 0 -5px 20px var(--primary-glow);
+    z-index: 10002;
+    letter-spacing: 2px;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Expanded Menu */
+.expanded-intel-menu {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(10, 10, 15, 0.98);
+    border: 1px solid var(--primary);
+    border-bottom: none;
+    border-radius: 20px 20px 0 0;
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0; /* Animated height */
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: height 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease, padding 0.5s;
+    pointer-events: none;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+}
+
+/* Hover Logic */
+.intel-cache-system:hover .expanded-intel-menu {
+    height: 100px;
+    opacity: 1;
+    padding: 20px;
+    pointer-events: auto;
+}
+
+.intel-cache-system:hover .static-bottom-bar {
+    background: #ffffff;
+    color: var(--primary);
+}
+
+/* Flickering highlight effect for trigger */
+.flicker-bar {
+    border-top: 1px dashed rgba(255,255,255,0.4);
+    animation: bar-flicker 2s infinite;
+}
+
+@keyframes bar-flicker {
+    0% { border-color: rgba(255,255,255,0.2); }
+    50% { border-color: #ffffff; text-shadow: 0 0 10px #ffffff; }
+    100% { border-color: rgba(255,255,255,0.2); }
+}
+
+.nav-btn {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(151, 78, 222, 0.1);
+    border: 1px solid transparent;
+}
+
+.nav-btn:hover {
+    background: var(--primary);
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--primary-glow);
+    border-color: #ffffff;
+}
+
+.flicker-highlight {
+    border: 1px dashed var(--primary);
+    animation: pulse-border 2s infinite;
+}
+
+@keyframes pulse-border {
+    0% { border-color: var(--primary); box-shadow: 0 0 5px var(--primary-glow); }
+    50% { border-color: #ffffff; box-shadow: 0 0 15px var(--primary); }
+    100% { border-color: var(--primary); box-shadow: 0 0 5px var(--primary-glow); }
+}
+
+@media (max-width: 600px) {
+    body { overflow-y: auto; height: auto; padding-bottom: 120px; }
+    .expanded-intel-menu {
+        flex-direction: column;
+        height: auto !important;
+        padding: 10px !important;
+    }
+    .intel-cache-system:hover .expanded-intel-menu {
+        height: 180px;
+    }
+}
+
+</style>
 </head>
 <body>
-    <h1 class="visually-hidden">Synix - Aspiring Red Teamer</h1>
 
-    <div class="terminal-container">
-<pre>
-                      <gy>     _______.____    ____ .__   __.  __  ___   ___ </gy>
-                      <gy>    /       |\   \  /   / |  \ |  | |  | \  \ /  / </gy>
-                      <gy>   |   (----` \   \/   /  |   \|  | |  |  \  V  /  </gy>
-                      <gy>    \   \      \_    _/   |  . `  | |  |   >   <   </gy>
-.<y>____________________<gy> .----)   |       |  |     |  |\   | |  |  /  .  \  </gy>______________________</y>.
-:<y>--------------------<gy> |_______/        |__|     |__| \__| |__| /__/ \__\ </gy>----------------------</y>:</gy>
-|                                                                                              |
-| Links: <a href="https://www.github.com/0xsynix">Github</a> | <a href="https://x.com/0xsynix">Twitter</a> | <a href="https://www.linkedin.com/in/nisarg-v09">LinkedIn</a> | <a href="https://tryhackme.com/p/0xSynix">TryHackMe</a> | <a href="#">HackTheBox</a>                                  |      
-|                                                                                              |
-| I'm Nisarg, an security researcher specializing in offensive security, red teaming and       |
-| cloud security. Always exploring, learning, and researching new tech.                        |
-|                                                                                              |             
-| Honestly, nothing gets me going like red teaming and cooking up custom malware. It's that    |
-| perfect mix of mischief and methodology—building something under the radar just to show how  |
-| defenses can hold up under real pressure.                                                    |
-|                                                                                              |
-| My downtime is basically a mix of tactical games, aviation games and spec-ops series.        |
-| I guess I'm just hooked on that high-stakes, problem-solving vibe—whether                    |
-| it's on-screen, in a game, or in a red team exercise.                                        |
-|                                                                                              |
-| If you find similar interests do hit me up!!                                                 |
-|                                                                                              |
-| # pwn all the things                                                                         |
-|                                                                                              |
-| <y>-- <w>Intel Cache ( Projects, Blogs)</w> ---------------------------------</y>                          | 
-|                                                                                              |
-| <gy>::</gy> <a href="https://syn1x.gitbook.io/synixs-field-manual" target="_blank">Gitbook</a>                                                                                   |
-|                                                                                              |
-|--------------------------------tactical.sortie@proton.me-------------------------------------|
-:<y>______________________________________________________________________________________________</y>:
-:<y>----------------------------------------------------------------------------------------------</y>:
-</pre>
+<div class="container">
+    <div class="ascii-header">
+     _______.____    ____ .__   __.  __  ___   ___ 
+    /       |\   \  /   / |  \ |  | |  | \  \ /  / 
+   |   (----` \   \/   /  |   \|  | |  |  \  V  /  
+    \   \       \_    _/   |  . `  | |  |   >   <   
+ .----)   |       |  |     |  |\   | |  |  /  .  \  
+ |_______/        |__|     |__| \__| |__| /__/ \__\ 
     </div>
+
+    <div class="nav-links">
+        <a href="https://www.github.com/0xsynix" target="_blank">GITHUB</a>
+        <a href="https://x.com/0xsynix" target="_blank">TWITTER</a>
+        <a href="https://www.linkedin.com/in/nisarg-v09" target="_blank">LINKEDIN</a>
+        <a href="https://tryhackme.com/p/0xSynix" target="_blank">TRYHACKME</a>
+        <a href="#" target="_blank">HACKTHEBOX</a>
+    </div>
+
+    <div class="content-section">
+        <div class="card">
+            [+] I'm Nisarg, a cybersecurity enthusiast passionate about offensive security, red teaming, bug bounty, and Malware Development.
+        </div>
+        
+        <p>Honestly, nothing gets me going like red teaming and cooking up custom malware. It's that perfect mix of mischief and methodology—building something under the radar just to show how defenses can hold up under real pressure.</p>
+        
+        <p>My downtime is basically a mix of tactical games, aviation games, and military movies. I'm hooked on that high-stakes, problem-solving vibe.</p>
+        
+        <div class="card" style="border-left: 3px solid #ff3333; background: rgba(255, 51, 51, 0.05);">
+            [!] Mission Statement: I guess I'm just hooked on that high-stakes, problem-solving vibe—whether it's on-screen, in a game, or in a red team exercise.
+        </div>
+    </div>
+
+    <div class="footer-text">
+        # pwn all the things | tactical.sortie@proton.me
+    </div>
+</div>
+
+<!-- Static Fixed Bottom Bar System -->
+<div class="intel-cache-system">
+    <!-- The menu that slides UP from the bar -->
+    <nav class="expanded-intel-menu">
+        <a href="https://syn1x.gitbook.io/synixs-field-manual" target="_blank" class="nav-btn flicker-highlight">
+            <span>[DIR]</span> GITBOOK
+        </a>
+        
+        <a href="https://rishabhyadavm07.github.io/Disclosed-Reports/reports_index.html" target="_blank" class="nav-btn flicker-highlight">
+            <span>[!]</span> H1 REPORTS
+        </a>
+    </nav>
+
+    <!-- The permanent bar at the very bottom -->
+    <div class="static-bottom-bar flicker-bar">
+        INTEL CACHE [^]
+    </div>
+</div>
+
 </body>
 </html>
